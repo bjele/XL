@@ -1,0 +1,18 @@
+Mandelbrot = LAMBDA(xleft,xright,ytop,ybottom,size,iterations,
+   MAKEARRAY(size,size,LAMBDA(c,r,LET(
+      x0, xleft+(r-1)*(xright-xleft)/size,
+      y0, ytop+(c-1)*(ybottom-ytop)/size,
+      fn, LAMBDA(ixy,iteration,LET(
+         i, INDEX(ixy,,1),
+         x, INDEX(ixy,,2),
+         y, INDEX(ixy,,3),
+         repeat, AND((x*x+y*y)<=(2*2),i>=iteration-1),
+         newi, IF(repeat,iteration,IF(i<iteration,i,i-1)),
+         xtemp, IF(repeat,x*x-y*y+x0,0),
+         newy, IF(repeat,2*x*y+y0,0),
+         newx, xtemp,
+         CHOOSE({1,2,3},newi,newx,newy)
+      )),
+   INDEX(REDUCE({0,0,0},SEQUENCE(iterations),fn),1)
+   )))
+);
